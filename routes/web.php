@@ -52,3 +52,20 @@ Route::get('/task/create', function() {
 
     return view('tasks.create', ['types' => $types, 'statuses' => $statuses]);
 });
+
+Route::post('/task/store', function( Request $request ) {
+    // การนำข้อมูลลง database แบบเป็นตัวๆ
+    // $task = new App\Models\Task();
+    // $task->type = $request->type;
+    // $task->name = $request->name;
+    // $task->detail = $request->detail;
+    // $task->status = $request->status;
+    // $task->save();
+
+    // การนำข้อมูลลง database ด้วยการเรียกใช้ Model ผ่าน function create ซึ่งต้องไปทำการ
+    // ประกาศ protected $fillable ไว้ใน Model ที่เรียกใช้งานด้วย
+    App\Models\Task::create($request->all());
+    return redirect()->back()->with('success', 'Insert Task Completed !!');
+    // return $request->type;
+    // return $request->all();
+});
