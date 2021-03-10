@@ -1,7 +1,7 @@
 // require('./bootstrap');
 
 // jQuery
-window.$ = window.jQuery = require("jquery");
+//window.$ = window.jQuery = require("jquery");
 
 // bootstrap
 require('bootstrap');

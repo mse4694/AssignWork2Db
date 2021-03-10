@@ -14,7 +14,7 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label for="type">Type :</label>
-            <select class="form-control" name="type">
+            <select class="form-select" name="type">
                 @foreach ( $types  as $type)
                     <option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
                 @endforeach
