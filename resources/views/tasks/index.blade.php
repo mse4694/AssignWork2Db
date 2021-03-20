@@ -8,30 +8,39 @@
 <hr>
     <table class="table">
         <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">ประเภทงาน</th>
-            <th scope="col">ชื่องาน</th>
-            <th scope="col">รายละเอียด</th>
-            <th scope="col">สถานะ</th>
-        </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ประเภทงาน</th>
+                <th scope="col">ชื่องาน</th>
+                <th scope="col">รายละเอียด</th>
+                <th scope="col">สถานะ</th>
+                <th scope="col">การดำเนินการ</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>@fat</td>
-        </tr>
-
+        @foreach($tasks as $task)
+            <tr>
+                <th scope="row"> {{ $task->id }}</th>
+                <td>{{ $task->type }}</td>
+                <td>{{ $task->name }}</td>
+                <td>{{ $task->detail }}</td>
+                <td>{{ $task->status ? 'เสร็จแล้ว' : 'ยังไม่เสร็จ' }}</td>
+                <td>
+                    <form id="check-complete-{{ $task->id }}" action="/task/{{ $task->id }}" style="display: none" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="status" value="1">
+                    </form>
+                    @if( !$task->status )
+                        <button 
+                            class="btn btn-sm btn-info" 
+                            onclick="document.getElementById('check-complete-{{ $task->id }}').submit()"> 
+                            เสร็จแล้ว 
+                        </button>
+                    @endif
+                </td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 @endsection
