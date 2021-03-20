@@ -42,6 +42,10 @@ Route::post('/store', function( Request $request ) {
     return $request;
 });
 
+Route::get('/tasks', function() {
+    return view('tasks.index');
+});
+
 Route::get('/task/create', function() {
     $types[] = ['id' => 1, 'name' => 'Support'];
     $types[] = ['id' => 2, 'name' => 'Maintenance'];
@@ -62,10 +66,43 @@ Route::post('/task/store', function( Request $request ) {
     // $task->status = $request->status;
     // $task->save();
 
+    $validation = $request->validate([
+        'type' => 'required',
+        'name' => 'required|max:255',
+        'status' => 'required'
+    ]);
+
     // การนำข้อมูลลง database ด้วยการเรียกใช้ Model ผ่าน function create ซึ่งต้องไปทำการ
     // ประกาศ protected $fillable ไว้ใน Model ที่เรียกใช้งานด้วย
     App\Models\Task::create($request->all());
     return redirect()->back()->with('success', 'Insert Task Completed !!');
     // return $request->type;
     // return $request->all();
+});
+
+Route::get('/task/{id}', function($id) {
+
+    $types[] = ['id' => 1, 'name' => 'Support'];
+    $types[] = ['id' => 2, 'name' => 'Maintenance'];
+    $types[] = ['id' => 3, 'name' => 'Change Requirement'];
+
+    $statuses[] = ['id' => 0, 'name' => 'Incomplete'];
+    $statuses[] = ['id' => 1, 'name' => 'Completed'];
+
+    $task = App\Models\Task::find($id);
+    // return $task;
+    return view('tasks.edit', ['task' => $task, 'types' => $types, 'statuses' => $statuses]);
+});
+
+Route::put('/task/{id}', function( Request $request, $id ) {
+    
+    $validation = $request->validate([
+        'type' => 'required',
+        'name' => 'required|max:255',
+        'status' => 'required'
+    ]);
+
+    App\Models\Task::find($id)->update($request->all());
+    return redirect()->back()->with('success', 'Update Task Completed !!');;
+    return $request->all();
 });
