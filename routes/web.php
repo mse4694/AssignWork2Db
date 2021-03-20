@@ -43,7 +43,32 @@ Route::post('/store', function( Request $request ) {
 });
 
 Route::get('/tasks', function() {
-    return view('tasks.index');
+    return view('tasks.index', ['tasks' => \App\Models\Task::all()]);
+});
+
+Route::post('/tasks', function() {
+
+    // การสร้าง เงื่อนไขการ validate form 
+    $taskCreateValidateRules = [
+        'type' => 'required',
+        'name' => 'required'
+    ];
+
+    // การสร้างเงื่อนไข การส่งข้อความ ให้กับสิ่งที่เราทำการ validate
+    $taskCreateValidateMessages = [
+        'type.required' => 'ลงข้อมูล <a style="cursor: pointer;" onclick="document.getElementById(' . "'type'" . ').focus()"> <i>ประเภทงาน</i> <b>ด้วยซิ</b>',
+        'name.required' => 'ลงข้อมูล <a style="cursor: pointer;" onclick="document.getElementById(' . "'name'" . ').focus()"><i>ชื่องาน</i> <b>ด้วยซิ</b>'
+    ];
+
+    request()->validate($taskCreateValidateRules, $taskCreateValidateMessages);
+
+    $data = request()->all();
+    if( request()->has('status')) {
+        $data['status'] = true;
+    }
+    \App\Models\Task::create($data);
+    return back();
+    //return request()->all();
 });
 
 Route::get('/task/create', function() {
@@ -105,4 +130,9 @@ Route::put('/task/{id}', function( Request $request, $id ) {
     App\Models\Task::find($id)->update($request->all());
     return redirect()->back()->with('success', 'Update Task Completed !!');;
     return $request->all();
+});
+
+Route::patch( '/task/{task}', function(App\Models\Task $task) {
+    $task->update(request()->all());
+    return back();
 });

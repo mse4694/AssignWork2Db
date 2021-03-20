@@ -1,3 +1,15 @@
+@if($errors->any())
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <h3>เกิดข้อผิดพลาด</h3>
+        <ul>
+        @foreach ($errors->all() as $error)
+            <li>{!! $error !!}</li>
+        @endforeach
+        </ul>
+    </div>
+@endif
+
 <form class="my-4" action="/tasks" method="POST">
     @csrf
     <div class="form-row">
@@ -14,7 +26,7 @@
 
         <div class="form-group col-md-6">
             <label for="name">ชื่องาน</label>
-            <input type="text" class="form-control" id="name" name="name" value="" {{ old( 'name' ) }}>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old( 'name' ) }}">
         </div>
     </div>
 
