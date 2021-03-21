@@ -5,7 +5,7 @@
 <div class="col-8 mx-auto mt-2">
     @if ( $message = Session::get('success') )
         <div class="alert alert-success">
-            {{ $message }}
+            {{ $message }} <a href="{{ url('/tasks') }}"><b><i>กดที่นี่เพื่อกลับหน้าหลัก</i></b></a>
         </div>
     @endif
 
