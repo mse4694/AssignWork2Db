@@ -15,13 +15,14 @@
                 <th scope="col">รายละเอียด</th>
                 <th scope="col">สถานะ</th>
                 <th scope="col">การดำเนินการ</th>
+                <th scope="col">แก้ไขสถานะ</th>
             </tr>
         </thead>
         <tbody>
         @foreach($tasks as $task)
             <tr>
                 <th scope="row"> {{ $task->id }}</th>
-                <td>{{ $task->type }}</td>
+                <td>{{ $task->getTypeName() }}</td>
                 <td>{{ $task->name }}</td>
                 <td>{{ $task->detail }}</td>
                 <td>{{ $task->status ? 'เสร็จแล้ว' : 'ยังไม่เสร็จ' }}</td>
@@ -37,6 +38,11 @@
                             onclick="document.getElementById('check-complete-{{ $task->id }}').submit()"> 
                             เสร็จแล้ว 
                         </button>
+                    @endif
+                </td>
+                <td>
+                    @if( $task->status )
+                        <a class="btn btn-sm btn-success" role="button" href="{{ url('/task', $task->id) }}"> แก้ไข</a>
                     @endif
                 </td>
             </tr>

@@ -16,4 +16,23 @@ class Task extends Model
         'detail',
         'status'
     ];
+
+    public function getTypeName() {
+        switch ($this->type) {
+            case 1:
+                return "งานคณะฯ";
+                break;
+            case 2:
+                return "งานตามชื่อตำแหน่ง";
+                break;
+            case 3:
+                return "งานที่ได้รับมอบหมาย";
+                break;
+            case 4:
+                return "งานเพื่อส่วนรวม";
+                break;
+            default:
+                return "งานที่ไม่รู้จัก";
+        }
+    }
 }
