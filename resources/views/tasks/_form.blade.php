@@ -23,17 +23,19 @@
             <label for="type">ประเภทงาน</label>
             <select name="type" id="type" class="form-control">
                 <option value="" selected>เลือกซิจ๊ะ...</option>
-                @foreach($types as $type)
-                    @if ( isset($task) ? $task->type : '') 
-                        @if ( old('type', $task->type) == $type['id'] )
-                            <option value="{{ $type['id'] }}" selected>{{ $type['name'] }}</option>
+                <?php $types = ( new \App\Models\Task() )->getTypes(); ?>
+                @foreach($types as $id => $label)
+                    @if( $id > 0 )
+                        @if ( isset($task) ? $task->type : '') 
+                            @if ( old('type', $task->type) == $id )
+                                <option value="{{ $id }}" selected>{{ $label }}</option>
+                            @else
+                                <option value="{{ $id }}">{{ $label }}</option>
+                            @endif
                         @else
-                            <option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
+                            <option value="{{ $id }}">{{ $label }}</option>
                         @endif
-                    @else
-                        <option value="{{ $type['id'] }}">{{ $type['name'] }}</option>
                     @endif
-
                 @endforeach
                 {{-- <option value="" selected>เลือกซิจ๊ะ...</option>
                 <option value="1" {{ old( 'type' ) == 1 ? selected : '' }}>งานคณะฯ</option>

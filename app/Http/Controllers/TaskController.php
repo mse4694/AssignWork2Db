@@ -15,13 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $types[] = ['id' => 1, 'name' => 'งานคณะฯ'];
-        $types[] = ['id' => 2, 'name' => 'งานตามชื่อตำแหน่ง'];
-        $types[] = ['id' => 3, 'name' => 'งานที่ได้รับมอบหมาย'];
-        $types[] = ['id' => 4, 'name' => 'งานเพื่อส่วนรวม'];
-        
-
-        return view('tasks.index', ['tasks' => Task::all(), 'types' => $types]);
+        return view('tasks.index', ['tasks' => Task::all()]);
         // return view('tasks.index', ['tasks' => \App\Models\Task::all()]);
     }
 
@@ -32,11 +26,6 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $types[] = ['id' => 1, 'name' => 'งานคณะฯ'];
-        $types[] = ['id' => 2, 'name' => 'งานตามชื่อตำแหน่ง'];
-        $types[] = ['id' => 3, 'name' => 'งานที่ได้รับมอบหมาย'];
-        $types[] = ['id' => 4, 'name' => 'งานเพื่อส่วนรวม'];
-
         // การสร้าง เงื่อนไขการ validate form 
         $taskCreateValidateRules = [
             'type' => 'required',
@@ -57,7 +46,7 @@ class TaskController extends Controller
         }
         Task::create($data);
  
-        return view('tasks.index', ['tasks' => Task::all(), 'types' => $types]);
+        return view('tasks.index', ['tasks' => Task::all(), 'success' => 'เพิ่มงานใหม่ เรียบร้อย!!']);
         //return back();
     }
 
@@ -108,17 +97,9 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $types[] = ['id' => 1, 'name' => 'งานคณะฯ'];
-        $types[] = ['id' => 2, 'name' => 'งานตามชื่อตำแหน่ง'];
-        $types[] = ['id' => 3, 'name' => 'งานที่ได้รับมอบหมาย'];
-        $types[] = ['id' => 4, 'name' => 'งานเพื่อส่วนรวม'];
-
-        $statuses[] = ['id' => 0, 'name' => 'Incomplete'];
-        $statuses[] = ['id' => 1, 'name' => 'Completed'];
-
         $task = Task::find($id);
         $tasks = Task::all();
-        return view('tasks.index', ['tasks' => $tasks, 'task' => $task, 'types' => $types, 'statuses' => $statuses]);
+        return view('tasks.index', ['tasks' => $tasks, 'task' => $task]);
     }
 
     /**
@@ -130,11 +111,6 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $types[] = ['id' => 1, 'name' => 'งานคณะฯ'];
-        $types[] = ['id' => 2, 'name' => 'งานตามชื่อตำแหน่ง'];
-        $types[] = ['id' => 3, 'name' => 'งานที่ได้รับมอบหมาย'];
-        $types[] = ['id' => 4, 'name' => 'งานเพื่อส่วนรวม'];
-
         $validation = $request->validate([
             'type' => 'required',
             'name' => 'required|max:255',
@@ -150,7 +126,7 @@ class TaskController extends Controller
         // Task::find($id)->update($request->all());
         Task::find($id)->update($data);        
 
-        return view('tasks.index', ['tasks' => Task::all(), 'types' => $types]);
+        return view('tasks.index', ['tasks' => Task::all(), 'success' => 'แก้ไขข้อมูลงาน เรียบร้อย!!']);
         //return redirect()->back()->with('success', 'Update Task Completed !!');
     }
 
@@ -168,6 +144,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Task::find($id)->delete();
+        return back();
     }
 }
