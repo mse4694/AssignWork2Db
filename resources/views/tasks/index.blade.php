@@ -3,6 +3,12 @@
 @section('title', 'Task Index')
 
 @section('content')
+@if ( isset($success) )
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {{ $success }}
+    </div>
+@endif
 @include('tasks._form')
 <h1>Task Contents</h1>
 <hr>
@@ -43,6 +49,16 @@
                 <td>
                     @if( $task->status )
                         <a class="btn btn-sm btn-success" role="button" href="{{ url('/task', $task->id) }}"> แก้ไข</a>
+                        <form id="delete-{{ $task->id }}" action="/task/{{ $task->id }}" style="display: none" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="status" value="1">
+                        </form>
+                        <button 
+                            class="btn btn-sm btn-danger" 
+                            onclick="document.getElementById('delete-{{ $task->id }}').submit()"> 
+                            ลบภาระงาน 
+                        </button>
                     @endif
                 </td>
             </tr>

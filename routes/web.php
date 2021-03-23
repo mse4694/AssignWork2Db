@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,8 @@ Route::put('/task/{id}', [TaskController::class, 'update']);
 
 Route::patch( '/task/{task}', [TaskController::class, 'updateStatus']);
 
+Route::delete( '/task/{task}', [TaskController::class, 'destroy']);
+
 Route::post('/task/store', [TaskController::class, 'store']);
 
 // Route::get('/task/create', function() {
@@ -85,3 +88,8 @@ Route::post('/task/store', [TaskController::class, 'store']);
 
 
 
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
